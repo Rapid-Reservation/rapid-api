@@ -1,0 +1,14 @@
+{
+    "functions": {
+      "api/app.py": {
+        "runtime": "vercel-python@0.24.0"
+      }
+    },
+    "env": {
+      "POSTGRES_HOST": "",
+      "POSTGRES_USER": "",
+      "POSTGRES_PASSWORD": "",
+      "POSTGRES_DATABASE": ""
+    }
+  }
+  
