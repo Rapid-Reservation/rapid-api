@@ -1,3 +1,5 @@
 INSERT_RESERVATION = "INSERT INTO tables (id) VALUES (%s);"
 
 SELECT_RESERVATION = "SELECT * FROM tables WHERE id = %s;"
+
+GET_TABLE_INFO = "SELECT * FROM tables;"
