@@ -17,7 +17,7 @@ def get_db_connection():
         dbname=os.getenv("POSTGRES_DATABASE")
     )
 
-@app.route('/reserve_table', methods=['POST'])
+@app.route('/table', methods=['POST'])
 def reserve_table():
     connection = None 
     try:
@@ -42,7 +42,9 @@ def reserve_table():
         if connection:
             connection.close()
 
-@app.route('/check_reservation/<int:table_number>', methods=['GET'])
+#TODO Change the routes to /table/ convention
+
+@app.route('/tables/<int:table_number>', methods=['GET'])
 def check_reservation(table_number):
     connection = get_db_connection() 
     try:
@@ -50,7 +52,7 @@ def check_reservation(table_number):
         cursor.execute(SELECT_RESERVATION, (table_number,))
         result = cursor.fetchone()
 
-        return jsonify({'is_reserved': bool(result)})
+        return jsonify({'is_reserved': result[1]})
 
     except Exception as e:
         print(f"Error: {e}")
@@ -59,6 +61,10 @@ def check_reservation(table_number):
     finally:
         if connection:
             connection.close()
+
+
+    #TODO Create a GET tables endpoint
+    # GET_TABLE_INFO query
 
 if __name__ == '__main__':
     app.run(debug=True)
