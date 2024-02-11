@@ -5,7 +5,7 @@ import psycopg2
 
 load_dotenv()
 
-from queries import INSERT_RESERVATION, SELECT_RESERVATION
+from queries import INSERT_RESERVATION, SELECT_RESERVATION, GET_TABLE_INFO
 
 app = Flask(__name__)
 
@@ -42,9 +42,7 @@ def reserve_table():
         if connection:
             connection.close()
 
-#TODO Change the routes to /table/ convention
-
-@app.route('/tables/<int:table_number>', methods=['GET'])
+@app.route('/table/<int:table_number>', methods=['GET'])
 def check_reservation(table_number):
     connection = get_db_connection() 
     try:
@@ -61,10 +59,26 @@ def check_reservation(table_number):
     finally:
         if connection:
             connection.close()
+            
+@app.route('/table', methods=['GET'])
+def get_table_info():
+    connection = get_db_connection() 
+    try:
+        cursor = connection.cursor()
+        cursor.execute(GET_TABLE_INFO)
+        results = cursor.fetchall()
+        
+        tables = [{'id': row[0], 'reserved': row[1]} for row in results]
 
-
-    #TODO Create a GET tables endpoint
-    # GET_TABLE_INFO query
+        return jsonify({'tables': tables})
+    
+    except Exception as e:
+        print(f"Error: {e}")
+        return jsonify({'error': 'Internal Server Error'}), 500
+    
+    finally:
+        if connection:
+            connection.close()
 
 if __name__ == '__main__':
     app.run(debug=True)
