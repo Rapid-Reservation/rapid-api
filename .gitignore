@@ -1,2 +1,7 @@
 .env
 .env.local
+__pycache__
+venv
+virualenv
+myvenv
+env
