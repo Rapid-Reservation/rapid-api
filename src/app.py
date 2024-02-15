@@ -16,6 +16,9 @@ def get_db_connection():
         password=os.getenv("POSTGRES_PASSWORD"),
         dbname=os.getenv("POSTGRES_DATABASE")
     )
+@app.route('/')
+def index():
+    return "Rapid Reservation API is running"
 
 @app.route('/table', methods=['POST'])
 def reserve_table():

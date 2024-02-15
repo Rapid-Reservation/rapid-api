@@ -1,5 +1,5 @@
-INSERT_RESERVATION = "INSERT INTO tables (id) VALUES (%s);"
+INSERT_RESERVATION = "INSERT INTO public.table (table_id) VALUES (%s);"
 
-SELECT_RESERVATION = "SELECT * FROM tables WHERE id = %s;"
+SELECT_RESERVATION = "SELECT * FROM public.table WHERE table_id = %s;"
 
-GET_TABLE_INFO = "SELECT * FROM tables;"
+GET_TABLE_INFO = "SELECT * FROM public.table;"
