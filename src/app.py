@@ -71,7 +71,7 @@ def get_table_info():
         cursor.execute(GET_TABLE_INFO)
         results = cursor.fetchall()
         
-        tables = [{'id': row[0], 'reserved': row[1]} for row in results]
+        tables = [{'Table #': row[2],'Order #': row[0], 'Max Seating': row[1], 'Reserved': row[3]} for row in results]
 
         return jsonify({'tables': tables})
     
