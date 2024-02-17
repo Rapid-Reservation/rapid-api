@@ -3,10 +3,14 @@ import datetime
 import logging
 from logging.handlers import RotatingFileHandler
 import os
+import os.path
 
 
 date = datetime.datetime.now().strftime("%Y-%m-%d")
-log_filename = os.path.join (f"logs/{date}.log")
+log_dir = "logs"
+log_filename = os.path.join(log_dir, f'{date}.log')
+
+os.makedirs(log_dir, exist_ok=True)
 
 logger = logging.getLogger()
 logFormatter = logging.Formatter("%(asctime)s-%(levelname)s-%(name)s-%(message)s", datefmt="%H:%M:%S")
@@ -17,7 +21,7 @@ consoleHandler.setFormatter(logFormatter)
 logger.addHandler(consoleHandler)
 
 # log to log/file.log
-fileHandler = RotatingFileHandler(log_filename)
+fileHandler = logging.FileHandler(log_filename)
 fileHandler.setFormatter(logFormatter)
 logger.addHandler(fileHandler)
 
