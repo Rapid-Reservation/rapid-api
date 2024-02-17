@@ -23,6 +23,7 @@ def index():
 
 @app.route('/table', methods=['POST'])
 def reserve_table():
+    # test!!!!
     try:
         connection = pool.get_connection()
         data = request.get_json()
