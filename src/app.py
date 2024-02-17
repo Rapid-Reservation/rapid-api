@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from dotenv import load_dotenv
 import os
 import psycopg2
@@ -8,6 +9,8 @@ load_dotenv()
 from queries import INSERT_RESERVATION, SELECT_RESERVATION, GET_TABLE_INFO
 
 app = Flask(__name__)
+# Allows for Cross-Origin Resource Sharing - Removing this stops the fornt end components from using data from api
+CORS(app)
 
 def get_db_connection():
     return psycopg2.connect(
@@ -16,6 +19,8 @@ def get_db_connection():
         password=os.getenv("POSTGRES_PASSWORD"),
         dbname=os.getenv("POSTGRES_DATABASE")
     )
+
+
 @app.route('/')
 def index():
     return "Rapid Reservation API is running"
