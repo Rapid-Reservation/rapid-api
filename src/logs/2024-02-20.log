@@ -1,0 +1,121 @@
+22:02:59-INFO-werkzeug-[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+22:02:59-INFO-werkzeug-[33mPress CTRL+C to quit[0m
+22:03:02-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:03:02] "GET /table HTTP/1.1" 200 -
+22:08:00-INFO-werkzeug-[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+22:08:00-INFO-werkzeug-[33mPress CTRL+C to quit[0m
+22:08:16-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:08:16] "[35m[1mPOST /table/2 HTTP/1.1[0m" 500 -
+22:08:25-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:08:25] "GET /table HTTP/1.1" 200 -
+22:08:28-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:08:28] "GET /table/2 HTTP/1.1" 200 -
+22:09:47-INFO-werkzeug-[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+22:09:47-INFO-werkzeug-[33mPress CTRL+C to quit[0m
+22:09:52-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:09:52] "POST /table/2 HTTP/1.1" 200 -
+22:09:57-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:09:57] "GET /table/2 HTTP/1.1" 200 -
+22:10:00-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:10:00] "GET /table HTTP/1.1" 200 -
+22:11:07-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:11:07] "GET /table HTTP/1.1" 200 -
+22:13:57-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:13:57] "GET /table HTTP/1.1" 200 -
+22:13:57-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:13:57] "GET /table HTTP/1.1" 200 -
+22:14:57-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:14:57] "GET /table HTTP/1.1" 200 -
+22:14:57-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:14:57] "GET /table HTTP/1.1" 200 -
+22:15:12-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:15:12] "OPTIONS /table/8 HTTP/1.1" 200 -
+22:15:13-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:15:13] "OPTIONS /table/8 HTTP/1.1" 200 -
+22:15:22-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:15:22] "GET /table HTTP/1.1" 200 -
+22:15:22-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:15:22] "GET /table HTTP/1.1" 200 -
+22:15:24-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:15:24] "OPTIONS /table/8 HTTP/1.1" 200 -
+22:15:29-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:15:29] "OPTIONS /table/8 HTTP/1.1" 200 -
+22:15:30-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:15:30] "OPTIONS /table/8 HTTP/1.1" 200 -
+22:15:31-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:15:31] "GET /table HTTP/1.1" 200 -
+22:15:31-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:15:31] "GET /table HTTP/1.1" 200 -
+22:15:34-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:15:34] "GET /table HTTP/1.1" 200 -
+22:15:34-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:15:34] "GET /table HTTP/1.1" 200 -
+22:15:35-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:15:35] "OPTIONS /table/8 HTTP/1.1" 200 -
+22:15:36-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:15:36] "OPTIONS /table/8 HTTP/1.1" 200 -
+22:16:48-INFO-werkzeug-[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+22:16:48-INFO-werkzeug-[33mPress CTRL+C to quit[0m
+22:17:01-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:17:01] "GET /table HTTP/1.1" 200 -
+22:17:01-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:17:01] "GET /table HTTP/1.1" 200 -
+22:17:06-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:17:06] "OPTIONS /table/8 HTTP/1.1" 200 -
+22:19:15-WARNING-flask_cors.core-Unknown option passed to Flask-CORS: allow_methods
+22:19:15-WARNING-flask_cors.core-Unknown option passed to Flask-CORS: allow_methods
+22:19:15-INFO-werkzeug-[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+22:19:15-INFO-werkzeug-[33mPress CTRL+C to quit[0m
+22:19:22-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:19:22] "GET /table HTTP/1.1" 200 -
+22:19:22-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:19:22] "GET /table HTTP/1.1" 200 -
+22:19:31-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:19:31] "OPTIONS /table/8 HTTP/1.1" 200 -
+22:19:41-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:19:41] "GET /table HTTP/1.1" 200 -
+22:19:41-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:19:41] "GET /table HTTP/1.1" 200 -
+22:19:42-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:19:42] "OPTIONS /table/8 HTTP/1.1" 200 -
+22:20:12-WARNING-flask_cors.core-Unknown option passed to Flask-CORS: allow_methods
+22:20:12-WARNING-flask_cors.core-Unknown option passed to Flask-CORS: allow_methods
+22:20:12-INFO-werkzeug-[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+22:20:12-INFO-werkzeug-[33mPress CTRL+C to quit[0m
+22:21:15-INFO-werkzeug-[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+22:21:15-INFO-werkzeug-[33mPress CTRL+C to quit[0m
+22:21:22-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:21:22] "GET /table HTTP/1.1" 200 -
+22:21:22-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:21:22] "GET /table HTTP/1.1" 200 -
+22:21:24-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:21:24] "OPTIONS /table/8 HTTP/1.1" 200 -
+22:25:18-INFO-werkzeug-[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+22:25:18-INFO-werkzeug-[33mPress CTRL+C to quit[0m
+22:25:23-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:25:23] "GET /table HTTP/1.1" 200 -
+22:25:23-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:25:23] "GET /table HTTP/1.1" 200 -
+22:25:25-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:25:25] "OPTIONS /table/8 HTTP/1.1" 200 -
+22:26:50-INFO-werkzeug-[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+22:26:50-INFO-werkzeug-[33mPress CTRL+C to quit[0m
+22:26:55-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:26:55] "GET /table HTTP/1.1" 200 -
+22:26:55-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:26:55] "GET /table HTTP/1.1" 200 -
+22:26:56-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:26:56] "OPTIONS /table/8 HTTP/1.1" 200 -
+22:26:58-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:26:58] "OPTIONS /table/8 HTTP/1.1" 200 -
+22:37:17-INFO-werkzeug-[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+22:37:17-INFO-werkzeug-[33mPress CTRL+C to quit[0m
+22:37:31-INFO-werkzeug-[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+22:37:31-INFO-werkzeug-[33mPress CTRL+C to quit[0m
+22:37:37-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:37:37] "GET /table HTTP/1.1" 200 -
+22:37:37-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:37:37] "GET /table HTTP/1.1" 200 -
+22:37:42-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:37:42] "OPTIONS /table/8 HTTP/1.1" 200 -
+22:40:33-INFO-werkzeug-[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+22:40:33-INFO-werkzeug-[33mPress CTRL+C to quit[0m
+22:40:38-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:40:38] "GET /table HTTP/1.1" 200 -
+22:40:38-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:40:38] "GET /table HTTP/1.1" 200 -
+22:40:40-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:40:40] "OPTIONS /table/8 HTTP/1.1" 200 -
+22:43:14-ERROR-werkzeug-127.0.0.1 - - [20/Feb/2024 22:43:14] code 400, message Bad request syntax ('\x16\x03\x01\x02z\x01\x00\x02v\x03\x03\xad¦\xadeî¾\x97wé\x93éµ"]\x10¹»\x9eÔØ')
+22:43:14-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:43:14] "[35m[1m\x16\x03\x01\x02z\x01\x00\x02v\x03\x03­¦­eî¾\x97wé\x93éµ"]\x10¹»\x9eÔØ[0m" HTTPStatus.BAD_REQUEST -
+22:43:21-ERROR-werkzeug-127.0.0.1 - - [20/Feb/2024 22:43:21] code 400, message Bad request version ('>\x13ùmÔ\x00"\x13\x01\x13\x03\x13\x02À+À/Ì©Ì¨À,À0À')
+22:43:21-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:43:21] "[35m[1m\x16\x03\x01\x02z\x01\x00\x02v\x03\x03û\x99ýþoÉ\x10\x17=£\x07áy|\x7fV\x19©ä\x93\x00$0A\x8e\x1a»3Õætg UîëéX!1H\x85(/\x10\x89\x05\x84Úó\x9c\x80\x13\x137g¨6P\x0b>\x13ùmÔ\x00"\x13\x01\x13\x03\x13\x02À+À/Ì©Ì¨À,À0À[0m" HTTPStatus.BAD_REQUEST -
+22:45:43-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:45:43] "GET / HTTP/1.1" 200 -
+22:45:43-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:45:43] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+22:46:09-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:46:09] "[35m[1mGET /table HTTP/1.1[0m" 500 -
+22:46:09-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:46:09] "[35m[1mGET /table HTTP/1.1[0m" 500 -
+22:46:11-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:46:11] "[35m[1mGET /table HTTP/1.1[0m" 500 -
+22:46:11-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:46:11] "[35m[1mGET /table HTTP/1.1[0m" 500 -
+22:46:20-INFO-werkzeug-[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+22:46:20-INFO-werkzeug-[33mPress CTRL+C to quit[0m
+22:46:33-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:46:33] "GET /table HTTP/1.1" 200 -
+22:46:33-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:46:33] "GET /table HTTP/1.1" 200 -
+22:46:36-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:46:36] "OPTIONS /table/8 HTTP/1.1" 200 -
+22:50:26-INFO-werkzeug-[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+22:50:26-INFO-werkzeug-[33mPress CTRL+C to quit[0m
+22:50:29-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:50:29] "GET /table HTTP/1.1" 200 -
+22:50:29-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:50:29] "GET /table HTTP/1.1" 200 -
+22:50:40-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:50:40] "OPTIONS /table/8 HTTP/1.1" 200 -
+22:53:41-INFO-werkzeug-[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+22:53:41-INFO-werkzeug-[33mPress CTRL+C to quit[0m
+22:53:41-INFO-werkzeug- * Restarting with stat
+22:53:42-WARNING-werkzeug- * Debugger is active!
+22:53:42-INFO-werkzeug- * Debugger PIN: 120-286-044
+22:53:52-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:53:52] "GET /table HTTP/1.1" 200 -
+22:53:52-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:53:52] "GET /table HTTP/1.1" 200 -
+22:53:57-INFO-werkzeug-127.0.0.1 - - [20/Feb/2024 22:53:57] "OPTIONS /table/7 HTTP/1.1" 200 -
