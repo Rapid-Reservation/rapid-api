@@ -69,3 +69,5 @@
 01:09:42-INFO-werkzeug-127.0.0.1 - - [21/Feb/2024 01:09:42] "POST /table/set/6 HTTP/1.1" 200 -
 01:09:44-INFO-werkzeug-127.0.0.1 - - [21/Feb/2024 01:09:44] "GET /table HTTP/1.1" 200 -
 01:09:44-INFO-werkzeug-127.0.0.1 - - [21/Feb/2024 01:09:44] "GET /table HTTP/1.1" 200 -
+16:16:46-WARNING-werkzeug- * Debugger is active!
+16:16:46-INFO-werkzeug- * Debugger PIN: 120-286-044
