@@ -1,19 +1,19 @@
 from logging.handlers import RotatingFileHandler
 from flask import Flask, request, jsonify
 
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 from flask_caching import Cache
 from psycopg2 import pool
 
 # Local Modules
-from queries import INSERT_RESERVATION, SELECT_RESERVATION, GET_TABLE_INFO
+from queries import SET_RESERVATION, SELECT_RESERVATION, GET_TABLE_INFO, CLEAR_RESERVATION
 import pool
 import logger
 
 
 app = Flask(__name__)
 
-CORS(app) # Allows for Cross-Origin Resource Sharing - Removing this stops the front end components from using data from api
+CORS(app=app, resources={r"/*": {"origins": "*"}}, send_wildcard=True) # Allows for Cross-Origin Resource Sharing - Removing this stops the front end components from using data from api
 
 cache = Cache(app, config={'CACHE_TYPE':'simple'}) # Creates simple in-app cache, can potentially move to redis based cache?
 
@@ -21,20 +21,32 @@ cache = Cache(app, config={'CACHE_TYPE':'simple'}) # Creates simple in-app cache
 def index():
     return "Rapid Reservation API is running"
 
-@app.route('/table', methods=['POST'])
-def reserve_table():
+@app.route('/table/set/<int:table_number>', methods=['POST'])
+@cross_origin()
+def reserve_table(table_number):
     try:
         connection = pool.get_connection()
-        data = request.get_json()
-        table_number = data.get('table_id')
-
         if table_number is not None:
             cursor = connection.cursor()
-            cursor.execute(INSERT_RESERVATION, (table_number,))
+            cursor.execute(SET_RESERVATION, (table_number,))
             connection.commit()
             return jsonify({'success': True, 'message': 'Table reserved successfully'})
+    except Exception as e:
+        print(f"Error: {e}")
+        return jsonify({'error': 'Internal Server Error'}), 500
+    finally:
+        pool.release_connection(connection)
 
-        return jsonify({'error': 'Invalid request'}), 400
+@app.route('/table/clear/<int:table_number>', methods=['POST'])
+@cross_origin()
+def clear_table(table_number):
+    try:
+        connection = pool.get_connection()
+        if table_number is not None:
+            cursor = connection.cursor()
+            cursor.execute(CLEAR_RESERVATION, (table_number,))
+            connection.commit()
+            return jsonify({'success': True, 'message': 'Table reserved successfully'})
     except Exception as e:
         print(f"Error: {e}")
         return jsonify({'error': 'Internal Server Error'}), 500
@@ -43,7 +55,7 @@ def reserve_table():
 
 
 @app.route('/table/<int:table_number>', methods=['GET'])
-@cache.cached(timeout=60)
+# @cache.cached(timeout=60)
 def check_reservation(table_number):
     try:
         connection = pool.get_connection()
@@ -63,7 +75,7 @@ def check_reservation(table_number):
 
             
 @app.route('/table', methods=['GET'])
-@cache.cached(timeout=60)  # Cache for 1 minute, need to discuss ideal time or convert to redis db cache
+#@cache.cached(timeout=60)  # Cache for 1 minute, need to discuss ideal time or convert to redis db cache
 def get_table_info():
     tables = {}
     try:
