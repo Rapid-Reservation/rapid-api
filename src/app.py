@@ -1,3 +1,10 @@
+"""
+
+Primary access point for the rapid-api.  Uses Flash to set routes that the ui can point to.
+
+"""
+
+
 from logging.handlers import RotatingFileHandler
 from flask import Flask, request, jsonify
 
@@ -19,11 +26,24 @@ cache = Cache(app, config={'CACHE_TYPE':'simple'}) # Creates simple in-app cache
 
 @app.route('/')
 def index():
+    """
+    This route exists to confirm the successful deployment of the api.
+
+    Returns:
+        Confirmation message
+    """
     return "Rapid Reservation API is running"
 
 @app.route('/table/set/<int:table_number>', methods=['POST'])
 @cross_origin()
 def reserve_table(table_number):
+    """
+    This route is called when a table is reserved. Calls SET_RESERVATION script in queries.py
+
+    Returns:
+        Success message on success
+        Error message on error
+    """
     try:
         connection = pool.get_connection()
         if table_number is not None:
@@ -40,6 +60,13 @@ def reserve_table(table_number):
 @app.route('/table/clear/<int:table_number>', methods=['POST'])
 @cross_origin()
 def clear_table(table_number):
+    """
+    This route can be called to make a table ready to be reserved again. Calls CLEAR_RESERVATION in queries.py
+
+    Returns:
+        Success message on success
+        Error message on Error
+    """
     try:
         connection = pool.get_connection()
         if table_number is not None:
@@ -57,6 +84,13 @@ def clear_table(table_number):
 @app.route('/table/<int:table_number>', methods=['GET'])
 # @cache.cached(timeout=60)
 def check_reservation(table_number):
+    """
+    This route is used to check the current status of a given table. Calls SELECT_RESERVATION from queries.py
+
+    Returns:
+        Json with table information on success
+        Error message on error
+    """
     try:
         connection = pool.get_connection()
         cursor = connection.cursor()
@@ -77,6 +111,13 @@ def check_reservation(table_number):
 @app.route('/table', methods=['GET'])
 #@cache.cached(timeout=60)  # Cache for 1 minute, need to discuss ideal time or convert to redis db cache
 def get_table_info():
+    """
+    This route is used to pull all the data from all the tables. Calls GET_TABLE_INFO from queries.py
+
+    Returns:
+        Json of all table data on success
+        Fail message on Failure
+    """
     tables = {}
     try:
         connection = pool.get_connection()

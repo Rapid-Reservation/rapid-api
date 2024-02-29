@@ -1,3 +1,6 @@
+"""
+Creates an always open connection that prevents closing and reopening the access point which causes major delays.
+"""
 from psycopg2 import pool
 from dotenv import load_dotenv
 import os

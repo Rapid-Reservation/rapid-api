@@ -1,4 +1,8 @@
-# Log information for logging, also might offload to blob storage or something?
+"""
+ 
+ Log information for logging, also might offload to blob storage or something?
+
+ """
 import datetime
 import logging
 from logging.handlers import RotatingFileHandler
