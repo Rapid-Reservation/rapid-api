@@ -1,0 +1,65 @@
+10:15:48-INFO-werkzeug-[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+10:15:48-INFO-werkzeug-[33mPress CTRL+C to quit[0m
+10:15:51-INFO-werkzeug-127.0.0.1 - - [28/Feb/2024 10:15:51] "GET / HTTP/1.1" 200 -
+10:15:51-INFO-werkzeug-127.0.0.1 - - [28/Feb/2024 10:15:51] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+10:16:06-INFO-werkzeug-127.0.0.1 - - [28/Feb/2024 10:16:06] "GET /table HTTP/1.1" 200 -
+10:16:09-INFO-werkzeug-127.0.0.1 - - [28/Feb/2024 10:16:09] "GET /table HTTP/1.1" 200 -
+10:16:24-INFO-werkzeug-127.0.0.1 - - [28/Feb/2024 10:16:24] "GET /table HTTP/1.1" 200 -
+10:23:34-INFO-werkzeug-127.0.0.1 - - [28/Feb/2024 10:23:34] "[35m[1mGET /table HTTP/1.1[0m" 500 -
+10:23:42-INFO-werkzeug-[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+10:23:42-INFO-werkzeug-[33mPress CTRL+C to quit[0m
+10:24:02-INFO-werkzeug-127.0.0.1 - - [28/Feb/2024 10:24:02] "GET /table HTTP/1.1" 200 -
+10:24:05-INFO-werkzeug-127.0.0.1 - - [28/Feb/2024 10:24:05] "GET /table HTTP/1.1" 200 -
+10:24:06-INFO-werkzeug-127.0.0.1 - - [28/Feb/2024 10:24:06] "GET /table HTTP/1.1" 200 -
+10:24:26-INFO-werkzeug-127.0.0.1 - - [28/Feb/2024 10:24:26] "POST /table/set/1 HTTP/1.1" 200 -
+10:24:29-INFO-werkzeug-127.0.0.1 - - [28/Feb/2024 10:24:29] "GET /table HTTP/1.1" 200 -
+10:24:49-INFO-werkzeug-127.0.0.1 - - [28/Feb/2024 10:24:49] "GET /table HTTP/1.1" 200 -
+10:29:20-INFO-werkzeug-127.0.0.1 - - [28/Feb/2024 10:29:20] "POST /table/clear/1 HTTP/1.1" 200 -
+10:29:21-INFO-werkzeug-127.0.0.1 - - [28/Feb/2024 10:29:21] "GET /table HTTP/1.1" 200 -
+10:29:22-INFO-werkzeug-127.0.0.1 - - [28/Feb/2024 10:29:22] "POST /table/set/3 HTTP/1.1" 200 -
+10:29:23-INFO-werkzeug-127.0.0.1 - - [28/Feb/2024 10:29:23] "POST /table/set/7 HTTP/1.1" 200 -
+10:29:23-INFO-werkzeug-127.0.0.1 - - [28/Feb/2024 10:29:23] "POST /table/set/1 HTTP/1.1" 200 -
+10:29:24-INFO-werkzeug-127.0.0.1 - - [28/Feb/2024 10:29:24] "GET /table HTTP/1.1" 200 -
+10:29:30-INFO-werkzeug-127.0.0.1 - - [28/Feb/2024 10:29:30] "GET /table HTTP/1.1" 200 -
+10:29:36-INFO-werkzeug-127.0.0.1 - - [28/Feb/2024 10:29:36] "POST /table/set/4 HTTP/1.1" 200 -
+10:29:40-INFO-werkzeug-127.0.0.1 - - [28/Feb/2024 10:29:40] "POST /table/set/2 HTTP/1.1" 200 -
+10:29:41-INFO-werkzeug-127.0.0.1 - - [28/Feb/2024 10:29:41] "GET /table HTTP/1.1" 200 -
+10:29:46-INFO-werkzeug-127.0.0.1 - - [28/Feb/2024 10:29:46] "GET /table HTTP/1.1" 200 -
+10:30:07-INFO-werkzeug-127.0.0.1 - - [28/Feb/2024 10:30:07] "POST /table/clear/3 HTTP/1.1" 200 -
+10:30:26-INFO-werkzeug-127.0.0.1 - - [28/Feb/2024 10:30:26] "POST /table/set/5 HTTP/1.1" 200 -
+10:30:27-INFO-werkzeug-127.0.0.1 - - [28/Feb/2024 10:30:27] "POST /table/set/3 HTTP/1.1" 200 -
+10:30:55-INFO-werkzeug-127.0.0.1 - - [28/Feb/2024 10:30:55] "POST /table/clear/2 HTTP/1.1" 200 -
+10:30:55-INFO-werkzeug-127.0.0.1 - - [28/Feb/2024 10:30:55] "POST /table/clear/7 HTTP/1.1" 200 -
+10:30:56-INFO-werkzeug-127.0.0.1 - - [28/Feb/2024 10:30:56] "POST /table/clear/1 HTTP/1.1" 200 -
+10:30:56-INFO-werkzeug-127.0.0.1 - - [28/Feb/2024 10:30:56] "POST /table/clear/3 HTTP/1.1" 200 -
+10:30:57-INFO-werkzeug-127.0.0.1 - - [28/Feb/2024 10:30:57] "POST /table/clear/4 HTTP/1.1" 200 -
+10:30:57-INFO-werkzeug-127.0.0.1 - - [28/Feb/2024 10:30:57] "POST /table/clear/5 HTTP/1.1" 200 -
+10:34:39-INFO-werkzeug-127.0.0.1 - - [28/Feb/2024 10:34:39] "GET /table HTTP/1.1" 200 -
+10:34:41-INFO-werkzeug-127.0.0.1 - - [28/Feb/2024 10:34:41] "GET /table HTTP/1.1" 200 -
+10:34:43-INFO-werkzeug-127.0.0.1 - - [28/Feb/2024 10:34:43] "GET /table HTTP/1.1" 200 -
+10:34:44-INFO-werkzeug-127.0.0.1 - - [28/Feb/2024 10:34:44] "GET /table HTTP/1.1" 200 -
+10:41:13-INFO-werkzeug-127.0.0.1 - - [28/Feb/2024 10:41:13] "POST /table/set/8 HTTP/1.1" 200 -
+10:41:13-INFO-werkzeug-127.0.0.1 - - [28/Feb/2024 10:41:13] "POST /table/set/2 HTTP/1.1" 200 -
+10:41:13-INFO-werkzeug-127.0.0.1 - - [28/Feb/2024 10:41:13] "GET /table HTTP/1.1" 200 -
+10:41:14-INFO-werkzeug-127.0.0.1 - - [28/Feb/2024 10:41:14] "POST /table/set/7 HTTP/1.1" 200 -
+10:41:15-INFO-werkzeug-127.0.0.1 - - [28/Feb/2024 10:41:15] "GET /table HTTP/1.1" 200 -
+10:43:09-INFO-werkzeug-127.0.0.1 - - [28/Feb/2024 10:43:09] "POST /table/set/3 HTTP/1.1" 200 -
+10:43:15-INFO-werkzeug-127.0.0.1 - - [28/Feb/2024 10:43:15] "POST /table/clear/3 HTTP/1.1" 200 -
+10:43:16-INFO-werkzeug-127.0.0.1 - - [28/Feb/2024 10:43:16] "POST /table/set/3 HTTP/1.1" 200 -
+10:43:40-INFO-werkzeug-127.0.0.1 - - [28/Feb/2024 10:43:40] "POST /table/set/4 HTTP/1.1" 200 -
+10:44:12-INFO-werkzeug-127.0.0.1 - - [28/Feb/2024 10:44:12] "POST /table/clear/4 HTTP/1.1" 200 -
+10:44:18-INFO-werkzeug-127.0.0.1 - - [28/Feb/2024 10:44:18] "POST /table/set/4 HTTP/1.1" 200 -
+10:44:20-INFO-werkzeug-127.0.0.1 - - [28/Feb/2024 10:44:20] "POST /table/clear/4 HTTP/1.1" 200 -
+10:44:27-INFO-werkzeug-127.0.0.1 - - [28/Feb/2024 10:44:27] "POST /table/clear/3 HTTP/1.1" 200 -
+10:44:28-INFO-werkzeug-127.0.0.1 - - [28/Feb/2024 10:44:28] "POST /table/clear/8 HTTP/1.1" 200 -
+10:44:28-INFO-werkzeug-127.0.0.1 - - [28/Feb/2024 10:44:28] "POST /table/set/8 HTTP/1.1" 200 -
+10:44:28-INFO-werkzeug-127.0.0.1 - - [28/Feb/2024 10:44:28] "POST /table/set/3 HTTP/1.1" 200 -
+10:44:29-INFO-werkzeug-127.0.0.1 - - [28/Feb/2024 10:44:29] "POST /table/clear/3 HTTP/1.1" 200 -
+10:44:30-INFO-werkzeug-127.0.0.1 - - [28/Feb/2024 10:44:30] "POST /table/set/3 HTTP/1.1" 200 -
+10:44:30-INFO-werkzeug-127.0.0.1 - - [28/Feb/2024 10:44:30] "POST /table/clear/3 HTTP/1.1" 200 -
+10:44:31-INFO-werkzeug-127.0.0.1 - - [28/Feb/2024 10:44:31] "POST /table/clear/8 HTTP/1.1" 200 -
+10:44:44-INFO-werkzeug-127.0.0.1 - - [28/Feb/2024 10:44:44] "[35m[1mPOST /table/set/3 HTTP/1.1[0m" 500 -
+10:50:19-INFO-werkzeug-127.0.0.1 - - [28/Feb/2024 10:50:19] "POST /table/clear/7 HTTP/1.1" 200 -
+11:05:55-INFO-werkzeug-127.0.0.1 - - [28/Feb/2024 11:05:55] "[35m[1mPOST /table/clear/2 HTTP/1.1[0m" 500 -
