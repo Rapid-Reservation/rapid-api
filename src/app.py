@@ -13,7 +13,7 @@ from flask_caching import Cache
 from psycopg2 import pool
 
 # Local Modules
-from queries import SET_RESERVATION, SELECT_RESERVATION, GET_TABLE_INFO, CLEAR_RESERVATION
+import queries as q
 import pool
 import logger
 
@@ -48,7 +48,7 @@ def reserve_table(table_number):
         connection = pool.get_connection()
         if table_number is not None:
             cursor = connection.cursor()
-            cursor.execute(SET_RESERVATION, (table_number,))
+            cursor.execute(q.SET_RESERVATION, (table_number,))
             connection.commit()
             return jsonify({'success': True, 'message': 'Table reserved successfully'})
     except Exception as e:
@@ -71,7 +71,7 @@ def clear_table(table_number):
         connection = pool.get_connection()
         if table_number is not None:
             cursor = connection.cursor()
-            cursor.execute(CLEAR_RESERVATION, (table_number,))
+            cursor.execute(q.CLEAR_RESERVATION, (table_number,))
             connection.commit()
             return jsonify({'success': True, 'message': 'Table reserved successfully'})
     except Exception as e:
@@ -94,7 +94,7 @@ def check_reservation(table_number):
     try:
         connection = pool.get_connection()
         cursor = connection.cursor()
-        cursor.execute(SELECT_RESERVATION, (table_number,))
+        cursor.execute(q.SELECT_RESERVATION, (table_number,))
         result = cursor.fetchall()
 
         table = [{'table_id': row[2],'order_id': row[0], 'max_customer': row[1], 'table_available': row[3]} for row in result]
@@ -122,7 +122,7 @@ def get_table_info():
     try:
         connection = pool.get_connection()
         cursor = connection.cursor()
-        cursor.execute(GET_TABLE_INFO)
+        cursor.execute(q.GET_TABLE_INFO)
         results = cursor.fetchall()
         
         tables = [{'table_id': row[2],'order_id': row[0], 'max_customer': row[1], 'table_available': row[3]} for row in results]
