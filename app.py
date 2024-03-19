@@ -5,7 +5,7 @@ Primary access point for the rapid-api.  Uses Flash to set routes that the ui ca
 """
 
 
-from logging.handlers import RotatingFileHandler
+# from logging.handlers import RotatingFileHandler
 from flask import Flask, request, jsonify
 
 from flask_cors import CORS, cross_origin
@@ -15,7 +15,7 @@ from psycopg2 import pool
 # Local Modules
 import queries as q
 import pool
-import logger
+
 
 
 app = Flask(__name__)
