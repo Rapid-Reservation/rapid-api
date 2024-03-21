@@ -1,0 +1,48 @@
+18:11:39-INFO-werkzeug-[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+18:11:39-INFO-werkzeug-[33mPress CTRL+C to quit[0m
+18:11:39-INFO-werkzeug- * Restarting with stat
+18:11:39-WARNING-werkzeug- * Debugger is active!
+18:11:39-INFO-werkzeug- * Debugger PIN: 161-750-402
+18:12:12-INFO-werkzeug-127.0.0.1 - - [21/Mar/2024 18:12:12] "GET / HTTP/1.1" 200 -
+18:12:12-INFO-werkzeug-127.0.0.1 - - [21/Mar/2024 18:12:12] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+18:13:07-INFO-werkzeug-127.0.0.1 - - [21/Mar/2024 18:13:07] "GET /customer HTTP/1.1" 200 -
+18:17:09-INFO-werkzeug-127.0.0.1 - - [21/Mar/2024 18:17:09] "[35m[1mPOST /customer/set?customer_name=Bob&customer_address=123%20Bobs%20St&cusomer_phone=123-456-7890&customer_email=123@a.cc HTTP/1.1[0m" 500 -
+18:20:57-INFO-werkzeug-127.0.0.1 - - [21/Mar/2024 18:20:57] "[35m[1mPOST /customer/set?customer_name=Bob&customer_address=123%20Bobs%20St&customer_phone=123-456-7890&customer_email=123@a.cc HTTP/1.1[0m" 500 -
+18:21:43-INFO-werkzeug- * Detected change in 'c:\\Users\\eddie\\OneDrive\\Desktop\\CSC 289 Programming Capstone Project\\rapid-api\\src\\app.py', reloading
+18:21:43-INFO-werkzeug- * Restarting with stat
+18:21:44-WARNING-werkzeug- * Debugger is active!
+18:21:44-INFO-werkzeug- * Debugger PIN: 161-750-402
+18:21:49-INFO-werkzeug-127.0.0.1 - - [21/Mar/2024 18:21:49] "[35m[1mPOST /customer/set?customer_name=Bob&customer_address=123%20Bobs%20St&customer_phone=123-456-7890&customer_email=123@a.cc HTTP/1.1[0m" 500 -
+18:25:43-INFO-werkzeug- * Detected change in 'c:\\Users\\eddie\\OneDrive\\Desktop\\CSC 289 Programming Capstone Project\\rapid-api\\src\\app.py', reloading
+18:25:43-INFO-werkzeug- * Restarting with stat
+18:25:44-WARNING-werkzeug- * Debugger is active!
+18:25:44-INFO-werkzeug- * Debugger PIN: 161-750-402
+18:25:49-INFO-werkzeug-127.0.0.1 - - [21/Mar/2024 18:25:49] "[35m[1mPOST /customer/set?customer_name=Bob&customer_address=123%20Bobs%20St&customer_phone=123-456-7890&customer_email=123@a.cc HTTP/1.1[0m" 500 -
+18:26:02-INFO-werkzeug-127.0.0.1 - - [21/Mar/2024 18:26:02] "[35m[1mPOST /customer/set?customer_name=Bob&customer_address=123%20Bobs%20St&customer_phone=123-456-7890&customer_email=123@a.cc HTTP/1.1[0m" 500 -
+18:27:26-INFO-werkzeug- * Detected change in 'c:\\Users\\eddie\\OneDrive\\Desktop\\CSC 289 Programming Capstone Project\\rapid-api\\src\\app.py', reloading
+18:27:26-INFO-werkzeug- * Restarting with stat
+18:27:27-WARNING-werkzeug- * Debugger is active!
+18:27:27-INFO-werkzeug- * Debugger PIN: 161-750-402
+18:27:29-INFO-werkzeug-127.0.0.1 - - [21/Mar/2024 18:27:29] "[35m[1mPOST /customer/set?customer_name=Bob&customer_address=123%20Bobs%20St&customer_phone=123-456-7890&customer_email=123@a.cc HTTP/1.1[0m" 500 -
+18:40:55-INFO-werkzeug-127.0.0.1 - - [21/Mar/2024 18:40:55] "[35m[1mPOST /customer/set HTTP/1.1[0m" 500 -
+19:10:26-INFO-werkzeug- * Detected change in 'c:\\Users\\eddie\\OneDrive\\Desktop\\CSC 289 Programming Capstone Project\\rapid-api\\src\\app.py', reloading
+19:10:26-INFO-werkzeug- * Restarting with stat
+19:10:26-WARNING-werkzeug- * Debugger is active!
+19:10:26-INFO-werkzeug- * Debugger PIN: 161-750-402
+19:10:45-INFO-werkzeug-127.0.0.1 - - [21/Mar/2024 19:10:45] "[35m[1mPOST /customer/set HTTP/1.1[0m" 500 -
+19:11:51-INFO-werkzeug- * Detected change in 'c:\\Users\\eddie\\OneDrive\\Desktop\\CSC 289 Programming Capstone Project\\rapid-api\\src\\queries.py', reloading
+19:11:51-INFO-werkzeug- * Restarting with stat
+19:11:51-WARNING-werkzeug- * Debugger is active!
+19:11:51-INFO-werkzeug- * Debugger PIN: 161-750-402
+19:12:24-INFO-werkzeug- * Detected change in 'c:\\Users\\eddie\\OneDrive\\Desktop\\CSC 289 Programming Capstone Project\\rapid-api\\src\\app.py', reloading
+19:12:24-INFO-werkzeug- * Restarting with stat
+19:12:25-WARNING-werkzeug- * Debugger is active!
+19:12:25-INFO-werkzeug- * Debugger PIN: 161-750-402
+19:12:49-INFO-werkzeug-127.0.0.1 - - [21/Mar/2024 19:12:49] "POST /customer/set HTTP/1.1" 200 -
+19:13:16-INFO-werkzeug-127.0.0.1 - - [21/Mar/2024 19:13:16] "[33mGET /customer/ HTTP/1.1[0m" 404 -
+19:13:28-INFO-werkzeug-127.0.0.1 - - [21/Mar/2024 19:13:28] "GET /customer HTTP/1.1" 200 -
+19:13:35-INFO-werkzeug-127.0.0.1 - - [21/Mar/2024 19:13:35] "GET /customer/1 HTTP/1.1" 200 -
+19:14:05-INFO-werkzeug-127.0.0.1 - - [21/Mar/2024 19:14:05] "POST /customer/set HTTP/1.1" 200 -
+19:14:14-INFO-werkzeug-127.0.0.1 - - [21/Mar/2024 19:14:14] "GET /customer HTTP/1.1" 200 -
+19:15:04-INFO-werkzeug-127.0.0.1 - - [21/Mar/2024 19:15:04] "[35m[1mPOST /customer/set HTTP/1.1[0m" 500 -

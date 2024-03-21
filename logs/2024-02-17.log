@@ -1,0 +1,46 @@
+18:16:00-INFO-werkzeug-[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+18:16:00-INFO-werkzeug-[33mPress CTRL+C to quit[0m
+18:16:00-INFO-werkzeug- * Restarting with stat
+18:16:01-WARNING-werkzeug- * Debugger is active!
+18:16:01-INFO-werkzeug- * Debugger PIN: 161-750-402
+23:08:55-INFO-werkzeug-[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+23:08:55-INFO-werkzeug-[33mPress CTRL+C to quit[0m
+23:08:55-INFO-werkzeug- * Restarting with stat
+23:08:55-WARNING-werkzeug- * Debugger is active!
+23:08:55-INFO-werkzeug- * Debugger PIN: 161-750-402
+23:09:04-INFO-werkzeug-127.0.0.1 - - [17/Feb/2024 23:09:04] "GET /table/1 HTTP/1.1" 200 -
+23:09:12-INFO-werkzeug-127.0.0.1 - - [17/Feb/2024 23:09:12] "[31m[1mPOST /table/1 HTTP/1.1[0m" 405 -
+23:11:25-INFO-werkzeug-127.0.0.1 - - [17/Feb/2024 23:11:25] "[33mPOST /table/?table_number=1 HTTP/1.1[0m" 404 -
+23:12:39-INFO-werkzeug-127.0.0.1 - - [17/Feb/2024 23:12:39] "[33mPOST /table/?table_id=1 HTTP/1.1[0m" 404 -
+23:13:39-INFO-werkzeug- * Detected change in 'c:\\Users\\eddie\\OneDrive\\Desktop\\CSC 289 Programming Capstone Project\\rapid-api\\src\\app.py', reloading
+23:13:39-INFO-werkzeug- * Restarting with stat
+23:13:39-WARNING-werkzeug- * Debugger is active!
+23:13:39-INFO-werkzeug- * Debugger PIN: 161-750-402
+23:13:46-INFO-werkzeug-127.0.0.1 - - [17/Feb/2024 23:13:46] "[33mPOST /table/?table_id=1 HTTP/1.1[0m" 404 -
+23:14:52-INFO-werkzeug- * Detected change in 'c:\\Users\\eddie\\OneDrive\\Desktop\\CSC 289 Programming Capstone Project\\rapid-api\\src\\app.py', reloading
+23:14:52-INFO-werkzeug- * Restarting with stat
+23:14:53-WARNING-werkzeug- * Debugger is active!
+23:14:53-INFO-werkzeug- * Debugger PIN: 161-750-402
+23:16:45-INFO-werkzeug-127.0.0.1 - - [17/Feb/2024 23:16:45] "[33mPOST /table/ HTTP/1.1[0m" 404 -
+23:18:29-INFO-werkzeug-127.0.0.1 - - [17/Feb/2024 23:18:29] "[33mPOST /table/ HTTP/1.1[0m" 404 -
+23:18:41-INFO-werkzeug-127.0.0.1 - - [17/Feb/2024 23:18:41] "[35m[1mPOST /table HTTP/1.1[0m" 500 -
+23:18:48-INFO-werkzeug-127.0.0.1 - - [17/Feb/2024 23:18:48] "[35m[1mPOST /table HTTP/1.1[0m" 500 -
+23:19:50-INFO-werkzeug-127.0.0.1 - - [17/Feb/2024 23:19:50] "[31m[1mPOST /table HTTP/1.1[0m" 400 -
+23:21:18-INFO-werkzeug-127.0.0.1 - - [17/Feb/2024 23:21:18] "[35m[1mPOST /table HTTP/1.1[0m" 500 -
+23:21:33-INFO-werkzeug-127.0.0.1 - - [17/Feb/2024 23:21:33] "[35m[1mPOST /table HTTP/1.1[0m" 500 -
+23:21:43-INFO-werkzeug-127.0.0.1 - - [17/Feb/2024 23:21:43] "[35m[1mPOST /table HTTP/1.1[0m" 500 -
+23:22:03-INFO-werkzeug- * Detected change in 'c:\\Users\\eddie\\OneDrive\\Desktop\\CSC 289 Programming Capstone Project\\rapid-api\\src\\queries.py', reloading
+23:22:03-INFO-werkzeug- * Restarting with stat
+23:22:03-WARNING-werkzeug- * Debugger is active!
+23:22:03-INFO-werkzeug- * Debugger PIN: 161-750-402
+23:22:10-INFO-werkzeug-127.0.0.1 - - [17/Feb/2024 23:22:10] "POST /table HTTP/1.1" 200 -
+23:22:22-INFO-werkzeug-127.0.0.1 - - [17/Feb/2024 23:22:22] "GET /table/1 HTTP/1.1" 200 -
+23:39:25-INFO-werkzeug- * Detected change in 'c:\\Users\\eddie\\OneDrive\\Desktop\\CSC 289 Programming Capstone Project\\rapid-api\\src\\app.py', reloading
+23:39:26-INFO-werkzeug- * Restarting with stat
+23:39:26-WARNING-werkzeug- * Debugger is active!
+23:39:26-INFO-werkzeug- * Debugger PIN: 161-750-402
+23:40:11-INFO-werkzeug-127.0.0.1 - - [17/Feb/2024 23:40:11] "[31m[1mPOST /table HTTP/1.1[0m" 400 -
+23:40:18-INFO-werkzeug-127.0.0.1 - - [17/Feb/2024 23:40:18] "POST /table HTTP/1.1" 200 -
+23:40:25-INFO-werkzeug-127.0.0.1 - - [17/Feb/2024 23:40:25] "GET /table HTTP/1.1" 200 -
