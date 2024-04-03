@@ -12,7 +12,7 @@ import os.path
 
 date = datetime.datetime.now().strftime("%Y-%m-%d")
 log_dir = "logs"
-log_filename = os.path.join(log_dir, f'{date}.log')
+log_filename = os.path.join(f'{date}.log')
 
 os.makedirs(log_dir, exist_ok=True)
 
