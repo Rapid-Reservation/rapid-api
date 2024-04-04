@@ -1,4 +1,5 @@
 # Imported Modules
+from models import Order
 from typing import Union
 from urllib import request
 from fastapi import FastAPI, Request
@@ -215,6 +216,79 @@ async def new_customer(request: Request):
     except Exception as e:
         print(f"Error: {e}")
         raise HTTPException(status_code=500, detail='Internal Server Error')
+    
+
+@app.get("/orders")
+def get_orders():
+    """
+  This route retrieves information about all orders.
+  Returns:
+      JSON with a list of order details on success.
+      Error message on failure.
+  """
+    try:
+        connection = pool.get_connection()
+        cursor = connection.cursor()
+        cursor.execute(q.GET_ALL_ORDERS)
+        orders = cursor.fetchall()
+        return [{"order_id": row[0], "table_number": row[1], "customer_id": row[2], "items": row[3]} for row in orders]
+    except Exception as e:
+        print(f"Error: {e}")
+        return {'error': 'Internal Server Error'}, 500
+    finally:
+        pool.release_connection(connection)
+
+
+@app.get("/order/{order_id}")
+def get_order(order_id: int):
+    """
+  This route retrieves information about a specific order.
+  Args:
+      order_id: The ID of the order to retrieve.
+  Returns:
+      JSON with order details on success.
+      Error message on failure.
+  """
+
+    try:
+        connection = pool.get_connection()
+        cursor = connection.cursor()
+        cursor.execute(q.GET_ORDER_BY_ID, (order_id))
+        order = cursor.fetchone()
+        if order:
+            return {"order_id": order[0], "table_number": order[1], "customer_id": order[2], "items": order[3]}
+        else:
+            raise HTTPException(status_code=404, detail="Order not found")
+    except HTTPException as e:
+        raise e
+    except Exception as e:
+        print(f"Error: {e}")
+        return {'error': 'Internal Server Error'}, 500
+    finally:
+        pool.release_connection(connection)
+
+
+@app.post("/order/place")
+async def place_order(request: Request, order: Order):
+    """
+  This route creates a new order.
+  Args:
+      request: The request object containing order details.
+  Returns:
+      JSON with success message on success.
+      Error message on failure.
+  """
+    try:
+        connection = pool.get_connection()
+        cursor = connection.cursor()
+        cursor.execute(q.PLACE_ORDER, (order.table_number, order.customer_id, order.items,))
+        connection.commit()
+        return {'success': True, 'message': 'Order placed successfully'}
+    except Exception as e:
+        print(f"Error: {e}")
+        return {'error': 'Internal Server Error'}, 500
+    finally:
+        pool.release_connection(connection)
 
 
 if __name__ == "__main__":
