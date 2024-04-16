@@ -9,7 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from psycopg2 import pool
 from datetime import datetime, timedelta
-from jose import JWTError, jwt  
+from jose import JWTError, jwt
 from passlib.context import CryptContext
 import uvicorn
 # Local Modules
@@ -202,11 +202,12 @@ async def new_customer(request: Request):
     """
     try:
         data = await request.json()
-        customer_id = data.get('customer_id')
-        customer_name = data.get('customer_name')
-        customer_address = data.get('customer_address')
-        customer_phone = data.get('customer_phone')
-        customer_email = data.get('customer_email')
+        # TODO: add string sanitization here
+        customer_id = sanitize(data.get('customer_id'))
+        customer_name = sanitize(data.get('customer_name'))
+        customer_address = sanitize(data.get('customer_address'))
+        customer_phone = sanitize(data.get('customer_phone'))
+        customer_email = sanitize(data.get('customer_email'))
         print(customer_name + customer_address + customer_phone + customer_email)
         connection = pool.get_connection()
         cursor = connection.cursor()
@@ -290,6 +291,29 @@ async def place_order(request: Request, order: Order):
     finally:
         pool.release_connection(connection)
 
+
+def sanitize(incoming):
+    """
+    This function will sanitize incoming strings before they are inserted into the database to prevent data injection/
+    Args:
+        incoming: The incoming string.
+    Returns:
+        incoming: The sanitized string.
+    """
+    # Note: Doing these seperately for readability
+    # Note: ampersand has to be first, else it will replace the correct display for the others
+    incoming = incoming.replace("&" , "&#38;")
+    incoming = incoming.replace("<" , "&#60;")
+    incoming = incoming.replace(">" , "&#62;")
+    incoming = incoming.replace('"' , "&#34;")
+    incoming = incoming.replace("'" , "&#39;")
+    return incoming
+
+# @app.get('/test')
+# def sanitize_test():
+#     badstring = "<bad> '' &"
+#     goodstring = sanitize(badstring)
+#     return HTMLResponse(content=goodstring, status_code=200)
 
 if __name__ == "__main__":
   uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=True)
