@@ -84,7 +84,29 @@ def clear_table(table_number: int):
             cursor = connection.cursor()
             cursor.execute(q.CLEAR_RESERVATION, (table_number,))
             connection.commit()
-            return {'success': True, 'message': 'Table reserved successfully'}
+            return {'success': True, 'message': 'Table cleared successfully'}
+    except Exception as e:
+        print(f"Error: {e}")
+        return {'error': 'Internal Server Error'}, 500
+    finally:
+        pool.release_connection(connection)
+
+"""
+This route can be called to make all table ready to be reserved again. Calls CLEAR_ALL_RESERVATIONS in queries.py
+
+Returns:
+        Success message on success
+        Error message on Error
+"""
+@app.post('/table/clear_all/')
+def clear_all_tables():
+
+    try:
+        connection = pool.get_connection()
+        cursor = connection.cursor()
+        cursor.execute(q.CLEAR_ALL_RESERVATIONS)
+        connection.commit()
+        return {'success': True, 'message': 'Tables all cleared successfully'}
     except Exception as e:
         print(f"Error: {e}")
         return {'error': 'Internal Server Error'}, 500
