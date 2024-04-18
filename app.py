@@ -2,7 +2,7 @@
 from models import Order
 from typing import Union
 from urllib import request
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, BackgroundTasks
 from fastapi.responses import JSONResponse
 from fastapi.exceptions import HTTPException
 from fastapi.middleware.cors import CORSMiddleware
@@ -12,6 +12,7 @@ from datetime import datetime, timedelta
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 import uvicorn
+import asyncio
 # Local Modules
 import queries as q
 import pool
@@ -39,11 +40,20 @@ app.add_middleware(
 This route is the base route for API
 
  Returns:
-        Staus message of API
+        Status message of API
 """
 @app.get("/")
 def root():
     return {"status":"Rapid Reservation API is running"}
+
+"""
+This is the wait function to reset tables after one hour
+
+"""
+async def wait_reset(background_tasks: BackgroundTasks, table_number: int):
+    await asyncio.sleep(30)  # Sleep for one hour TESTING!!!! DONT FORGET TO CHANGE TIME TO 3600 FOR PRODUCTION
+    background_tasks.add_task(clear_table(table_number))
+    
 
 """
 This route is called when a table is reserved. Calls SET_RESERVATION script in queries.py
@@ -61,6 +71,8 @@ def reserve_table(table_number: int):
             cursor = connection.cursor()
             cursor.execute(q.SET_RESERVATION, (table_number,))
             connection.commit()
+            # TODO: Set BackgroundTask to wait 1 hour then reset the table
+            wait_reset(table_number)
             return {'success': True, 'message': 'Table reserved successfully'}
     except Exception as e:
         print(f"Error: {e}")
