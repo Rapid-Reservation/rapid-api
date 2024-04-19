@@ -47,13 +47,39 @@ def root():
     return {"status":"Rapid Reservation API is running"}
 
 """
+This is a non api version of clear table for the auto reset
+
+"""
+def auto_clear_table():
+
+    try:
+        connection = pool.get_connection()
+        #if table_number is not None:
+        cursor = connection.cursor()
+        #TODO: Don't call CLEAR_ALL_RESERVATIONS, just clear by table_number
+        cursor.execute(q.CLEAR_ALL_RESERVATIONS)
+        connection.commit()
+    except Exception as e:
+        print(f"Error: {e}")
+    finally:
+        pool.release_connection(connection)
+
+"""
 This is the wait function to reset tables after one hour
 
 """
-async def wait_reset(background_tasks: BackgroundTasks, table_number: int):
+async def wait_reset():
     await asyncio.sleep(30)  # Sleep for one hour TESTING!!!! DONT FORGET TO CHANGE TIME TO 3600 FOR PRODUCTION
-    background_tasks.add_task(clear_table(table_number))
+    print("TESTTETTESTSTSETEST")
+    auto_clear_table()
     
+
+@app.get('/schedule-reset/')
+async def schedule_reset_route():
+    # TODO: Merge into reserve_table, and pass in table_number
+    await wait_reset()
+    return {"message": "Reset scheduled in one hour."}
+
 
 """
 This route is called when a table is reserved. Calls SET_RESERVATION script in queries.py
@@ -72,7 +98,7 @@ def reserve_table(table_number: int):
             cursor.execute(q.SET_RESERVATION, (table_number,))
             connection.commit()
             # TODO: Set BackgroundTask to wait 1 hour then reset the table
-            wait_reset(table_number)
+            # await wait_reset(background_tasks)
             return {'success': True, 'message': 'Table reserved successfully'}
     except Exception as e:
         print(f"Error: {e}")
@@ -96,6 +122,7 @@ def clear_table(table_number: int):
             cursor = connection.cursor()
             cursor.execute(q.CLEAR_RESERVATION, (table_number,))
             connection.commit()
+            # TODO: If table_number has an active countdown, it needs to be canceled
             return {'success': True, 'message': 'Table cleared successfully'}
     except Exception as e:
         print(f"Error: {e}")
@@ -118,6 +145,7 @@ def clear_all_tables():
         cursor = connection.cursor()
         cursor.execute(q.CLEAR_ALL_RESERVATIONS)
         connection.commit()
+        # TODO: Cancel all active countdowns
         return {'success': True, 'message': 'Tables all cleared successfully'}
     except Exception as e:
         print(f"Error: {e}")
