@@ -232,7 +232,28 @@ def get_orders():
         cursor = connection.cursor()
         cursor.execute(q.GET_ALL_ORDERS)
         orders = cursor.fetchall()
-        return [{"order_id": row[0], "table_number": row[1], "customer_id": row[2], "items": row[3]} for row in orders]
+        cursor.execute(q.GET_ALL_ORDER_ITEMS)
+        order_items = cursor.fetchall()
+        return [
+            {
+                "order_id": row[0],
+                "table_number": row[1],
+                "customer_id": row[2],
+                # Grab all of the food items and quantities from the ORDER_ITEMS table
+                # add only those which belong to the current order_id
+                "items": [
+                    {
+                        "food_id": order_item[0],
+                        "quantity": order_item[2]
+                    }
+
+                    for order_item in order_items
+                    if order_item[1] == row[0]
+                ]
+            }
+
+            for row in orders
+        ]
     except Exception as e:
         print(f"Error: {e}")
         return {'error': 'Internal Server Error'}, 500
