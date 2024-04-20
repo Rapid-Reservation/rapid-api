@@ -136,6 +136,13 @@ def clear_all_tables():
         cursor.execute(q.CLEAR_ALL_RESERVATIONS)
         connection.commit()
         # TODO: Cancel all active countdowns
+        try:
+            for this_task in TASK_DICT.values():
+                task = this_task
+                task.cancel()
+            TASK_DICT.clear()
+        except:
+            pass
         return {'success': True, 'message': 'Tables all cleared successfully'}
     except Exception as e:
         print(f"Error: {e}")
