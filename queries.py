@@ -18,6 +18,8 @@ SET_RESERVATION = "UPDATE public.table SET table_available = False WHERE table_i
 
 CLEAR_RESERVATION = "UPDATE public.table SET table_available = True WHERE table_id = %s;"
 
+CLEAR_ALL_RESERVATIONS = "UPDATE public.table SET table_available = True;"
+
 SELECT_RESERVATION = "SELECT * FROM public.table WHERE table_id = %s;"
 
 GET_TABLE_INFO = "SELECT * FROM public.table ORDER BY table_id;"
