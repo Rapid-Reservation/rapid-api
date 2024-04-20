@@ -21,6 +21,10 @@ import models
 
 app = FastAPI()
 
+# global variable to store and track running asynchronous tasks
+
+TASK_DICT = dict()
+
 # origins = [
 #     "http://localhost/*",
 #     "http://localhost:3000/*",
@@ -47,39 +51,16 @@ def root():
     return {"status":"Rapid Reservation API is running"}
 
 """
-This is a non api version of clear table for the auto reset
+This is the auto reset function
 
 """
-def auto_clear_table():
-
+async def schedule_reset(table_number: int):
     try:
-        connection = pool.get_connection()
-        #if table_number is not None:
-        cursor = connection.cursor()
-        #TODO: Don't call CLEAR_ALL_RESERVATIONS, just clear by table_number
-        cursor.execute(q.CLEAR_ALL_RESERVATIONS)
-        connection.commit()
-    except Exception as e:
-        print(f"Error: {e}")
-    finally:
-        pool.release_connection(connection)
-
-"""
-This is the wait function to reset tables after one hour
-
-"""
-async def wait_reset():
-    await asyncio.sleep(30)  # Sleep for one hour TESTING!!!! DONT FORGET TO CHANGE TIME TO 3600 FOR PRODUCTION
-    print("TESTTETTESTSTSETEST")
-    auto_clear_table()
-    
-
-@app.get('/schedule-reset/')
-async def schedule_reset_route():
-    # TODO: Merge into reserve_table, and pass in table_number
-    await wait_reset()
-    return {"message": "Reset scheduled in one hour."}
-
+        await asyncio.sleep(3600) # Sleep for one hour. Change for testing.
+        clear_table(table_number)
+    except asyncio.CancelledError:
+        print(f"Reset canceled.")
+        raise
 
 """
 This route is called when a table is reserved. Calls SET_RESERVATION script in queries.py
@@ -89,8 +70,7 @@ Returns:
     Error message on error
 """
 @app.post('/table/set/{table_number}')
-def reserve_table(table_number: int):
-
+async def reserve_table(table_number: int):
     try:
         connection = pool.get_connection()
         if table_number is not None:
@@ -98,7 +78,12 @@ def reserve_table(table_number: int):
             cursor.execute(q.SET_RESERVATION, (table_number,))
             connection.commit()
             # TODO: Set BackgroundTask to wait 1 hour then reset the table
-            # await wait_reset(background_tasks)
+            task = asyncio.create_task(schedule_reset(table_number))
+            TASK_DICT[table_number] = task
+            try:
+                await task
+            except asyncio.CancelledError:
+                print(f"Cancel was called")
             return {'success': True, 'message': 'Table reserved successfully'}
     except Exception as e:
         print(f"Error: {e}")
@@ -123,6 +108,11 @@ def clear_table(table_number: int):
             cursor.execute(q.CLEAR_RESERVATION, (table_number,))
             connection.commit()
             # TODO: If table_number has an active countdown, it needs to be canceled
+            try:
+                task = TASK_DICT.pop(table_number)
+                task.cancel()
+            except:
+                pass
             return {'success': True, 'message': 'Table cleared successfully'}
     except Exception as e:
         print(f"Error: {e}")
