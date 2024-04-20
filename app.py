@@ -236,9 +236,9 @@ def get_orders():
         order_items = cursor.fetchall()
         return [
             {
-                "order_id": row[0],
+                "order_id": row[6],
                 "table_number": row[1],
-                "customer_id": row[2],
+                "customer_id": row[0],
                 # Grab all of the food items and quantities from the ORDER_ITEMS table
                 # add only those which belong to the current order_id
                 "items": [
@@ -281,9 +281,9 @@ def get_order(order_id: int):
             cursor.execute(q.GET_ORDER_ITEMS_BY_ID, (order_id, ))
             order_items = cursor.fetchall()
             return {
-                "order_id": order[0],
+                "order_id": order[6],
                 "table_number": order[1],
-                "customer_id": order[2],
+                "customer_id": order[0],
                 "items": [
                     {
                         "food_id": order_item[0],
