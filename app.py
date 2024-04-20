@@ -1,22 +1,25 @@
 # Imported Modules
+import os
+from typing import Annotated
+from dotenv import load_dotenv
 from models import Order
-from typing import Union
-from urllib import request
-from fastapi import FastAPI, Request
-from fastapi.responses import JSONResponse
+from fastapi import FastAPI, Request, HTTPException, Depends, status
 from fastapi.exceptions import HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from psycopg2 import pool
 from datetime import datetime, timedelta
-from jose import JWTError, jwt
+import jwt 
 from passlib.context import CryptContext
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 import uvicorn
 # Local Modules
 import queries as q
 import pool
-import models
 # from logging.handlers import RotatingFileHandler - stupid Vercel
+
+load_dotenv()
+SECRET_KEY=os.getenv('SECRET_KEY')
 
 app = FastAPI()
 
@@ -44,6 +47,69 @@ This route is the base route for API
 @app.get("/")
 def root():
     return {"status":"Rapid Reservation API is running"}
+
+
+"""
+Authentication
+"""
+class User(BaseModel):
+    user_id: int
+    user_name: str
+    password: str
+    isadmin: bool
+
+
+
+"""
+Login route
+"""
+@app.post('/login')
+async def login(request: Request):
+    try:
+        data = await request.json()
+        username = data.get('username')
+        password = data.get('password')
+        connection = pool.get_connection()
+        cursor = connection.cursor()
+        cursor.execute(q.GET_USER_BY_USERNAME, (username,))
+        connection.commit()
+        user = cursor.fetchone()
+
+        if user:
+            if user[1] == username and user[2] == password:
+                token_data = {
+                    "user_id": user[0],
+                    "user_name": user[1],
+                    "expires_at": (datetime.utcnow() + timedelta(minutes=20)).isoformat()
+                }
+                jwt_token = jwt.encode(token_data, "50aa207b47293b1bf86b792a99cdc5a9bd55c6fb92010f156b9bbfd4c3e58bfd", algorithm="HS256")
+
+                response_data = {
+                    "message": "Login Successful",
+                    "user": {
+                        "user_id": user[0],
+                        "user_name": user[1],
+                        "isadmin": user[3]
+                    },
+                    "token": jwt_token
+                }
+                return response_data
+        raise HTTPException(status_code=401, detail="Incorrect username or password")
+    finally:
+        pool.release_connection(connection)
+
+
+
+
+            
+
+
+
+
+
+"""
+TABLES
+"""
 
 """
 This route is called when a table is reserved. Calls SET_RESERVATION script in queries.py
@@ -142,6 +208,57 @@ def get_table_info():
     finally:
         pool.release_connection(connection)
 
+"""
+USERS
+"""
+@app.get('/users')
+def get_user():
+    """
+
+    """
+    users={}
+    try:
+        connection = pool.get_connection()
+        cursor = connection.cursor()
+        cursor.execute(q.GET_ALL_USERS)
+        results = cursor.fetchall()
+        
+        return [{"user_id": row[0], "user_name": row[1], "password": row[2], "isadmin": row[3]} for row in results]
+        return users
+    
+    except Exception as e:
+        print(f"Error: {e}")
+        return {'error': 'Internal Server Error'}, 500
+    finally:
+        pool.release_connection(connection)
+
+@app.post('/users/create')
+async def new_customer(request: Request):
+    """
+    This route can be called to add a new customer. Calls CREATE_NEW_CUSTOMER in queries.py
+    Returns:
+        Success message on success
+        Error message on Error
+    """
+    try:
+        data = await request.json()
+        user_id = data.get('user_id')
+        user_name = data.get('user_name')
+        password = data.get('password')
+        isadmin = data.get('isadmin')
+        connection = pool.get_connection()
+        cursor = connection.cursor()
+        cursor.execute(q.CREATE_NEW_USER, ((user_id, user_name, password,isadmin)))
+        connection.commit()
+        return {'success': True, 'message': 'User {user_id} added successfully'}
+    except Exception as e:
+        print(f"Error: {e}")
+        raise HTTPException(status_code=500, detail='Internal Server Error')
+
+"""
+CUSTOMERS
+"""
+
 @app.get('/customer')
 def get_customer_info():
     """
@@ -218,6 +335,9 @@ async def new_customer(request: Request):
         print(f"Error: {e}")
         raise HTTPException(status_code=500, detail='Internal Server Error')
     
+"""
+ORDERS
+"""
 
 @app.get("/orders")
 def get_orders():
