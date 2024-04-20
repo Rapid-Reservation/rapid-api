@@ -9,7 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from psycopg2 import pool
 from datetime import datetime, timedelta
-from jose import JWTError, jwt  
+import jwt 
 from passlib.context import CryptContext
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 import uvicorn
@@ -19,6 +19,8 @@ import pool
 # from logging.handlers import RotatingFileHandler - stupid Vercel
 
 load_dotenv()
+SECRET_KEY=os.getenv('SECRET_KEY')
+
 app = FastAPI()
 
 # origins = [
@@ -51,118 +53,56 @@ def root():
 Authentication
 """
 class User(BaseModel):
-    id: int
-    email: str
+    user_id: int
+    user_name: str
     password: str
     isadmin: bool
 
-class Token(BaseModel):
-    access_token: str
-    token_type: str
 
 
-class TokenData(BaseModel):
-    username: str | None = None
-
-
-SECRET_KEY=os.getenv('SECERT_KEY')
-ALGORITHM=os.getenv('ALGORITHM')
-ACCESS_TOKEN_EXPIRE_MINUTES = os.getenv('ACCESS_TOKEN_EXPIRE_MINUTES')
-
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
-
-
-def hash_password(password: str):
-    """
-    Function takes a passed password and hashes it \n
-    Returns:
-        JSON of all table data on success
-        Fail message on Failure
-    """
-    return pwd_context.hash(password)
-
-def verify_password(plain_password: str, hashed_password: str):
-    """
-    Function takes a passed password and password hashed and confirms they are the same
-    Returns:
-        JSON of all table data on success
-        Fail message on Failure
-    """
-    return pwd_context.verify(plain_password, hashed_password)
-
-def create_access_token(data: dict, expires_delta: timedelta):
-    to_encode = data.copy()
-    expire = datetime.now(datetime.UTC)+ expires_delta
-    to_encode.update({"exp": expire})
-    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
-    return encoded_jwt
-
-# Function to authenticate a user
-def authenticate_user(username: str, password: str):
-    user = get_user(username)
-    if not user or not verify_password(password, user.get("password_hash")):
-        return False
-    return user
-
-
-# Function to get a user from the database
-def get_user(username: str):
+"""
+Login route
+"""
+@app.post('/login')
+async def login(request: Request):
     try:
+        data = await request.json()
+        username = data.get('username')
+        password = data.get('password')
         connection = pool.get_connection()
         cursor = connection.cursor()
-        cursor.execute(q.GET_USER_BY_USERNAME, (username))
-        user_data = cursor.fetchone()
+        cursor.execute(q.GET_USER_BY_USERNAME, (username,))
+        connection.commit()
+        user = cursor.fetchone()
 
-        if user_data:
-            # Extract user data into a dictionary
-            user = {
-                "user_name": user_data[1],
-                "password": user_data[2],
-            }
-            return user
-        else:
-            return None  # Return None if user not found
-        
+        if user:
+            if user[1] == username and user[2] == password:
+                token_data = {
+                    "user_id": user[0],
+                    "user_name": user[1],
+                    "expires_at": (datetime.utcnow() + timedelta(minutes=20)).isoformat()
+                }
+                jwt_token = jwt.encode(token_data, "50aa207b47293b1bf86b792a99cdc5a9bd55c6fb92010f156b9bbfd4c3e58bfd", algorithm="HS256")
+
+                response_data = {
+                    "message": "Login Successful",
+                    "user": {
+                        "user_id": user[0],
+                        "user_name": user[1],
+                        "isadmin": user[3]
+                    },
+                    "token": jwt_token
+                }
+                return response_data
+        raise HTTPException(status_code=401, detail="Incorrect username or password")
     finally:
         pool.release_connection(connection)
 
 
-async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
-    credentials_exception = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Could not validate credentials",
-        headers={"WWW-Authenticate": "Bearer"},
-    )
-    try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        username: str = payload.get("sub")
-        if username is None:
-            raise credentials_exception
-        token_data = TokenData(username=username)
-    except JWTError:
-        raise credentials_exception
-    user = get_user(username=token_data.username)
-    if user is None:
-        raise credentials_exception
-    return user
 
-# Endpoint for user login
-@app.post("/token")
-async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
-    user = authenticate_user(form_data.username, form_data.password)
-    if not user:
-        raise HTTPException(status_code=401, detail="Incorrect username or password")
-    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    access_token = create_access_token(data={"sub": user.username}, expires_delta=access_token_expires)
-    return {"access_token": access_token, "token_type": "bearer"}
 
-# Endpoint for token refresh (if needed)
-@app.post("/token/refresh")
-async def refresh_access_token(current_user: User = Depends(get_current_user)):
-    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    access_token = create_access_token(data={"sub": current_user.username}, expires_delta=access_token_expires)
-    return {"access_token": access_token, "token_type": "bearer"}
+            
+
 
 
 
