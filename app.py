@@ -1,23 +1,29 @@
 # Imported Modules
+import os
+from typing import Annotated
+from dotenv import load_dotenv
 from models import Order
 from typing import Union
 from urllib import request
-from fastapi import FastAPI, Request, BackgroundTasks
+from fastapi import FastAPI, Request, HTTPException, Depends, status
 from fastapi.responses import JSONResponse
 from fastapi.exceptions import HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from psycopg2 import pool
 from datetime import datetime, timedelta
-from jose import JWTError, jwt
+import jwt 
 from passlib.context import CryptContext
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 import uvicorn
 import asyncio
 # Local Modules
 import queries as q
 import pool
-import models
 # from logging.handlers import RotatingFileHandler - stupid Vercel
+
+load_dotenv()
+SECRET_KEY=os.getenv('SECRET_KEY')
 
 app = FastAPI()
 
@@ -49,6 +55,69 @@ This route is the base route for API
 @app.get("/")
 def root():
     return {"status":"Rapid Reservation API is running"}
+
+
+"""
+Authentication
+"""
+class User(BaseModel):
+    user_id: int
+    user_name: str
+    password: str
+    isadmin: bool
+
+
+
+"""
+Login route
+"""
+@app.post('/login')
+async def login(request: Request):
+    try:
+        data = await request.json()
+        username = data.get('username')
+        password = data.get('password')
+        connection = pool.get_connection()
+        cursor = connection.cursor()
+        cursor.execute(q.GET_USER_BY_USERNAME, (username,))
+        connection.commit()
+        user = cursor.fetchone()
+
+        if user:
+            if user[1] == username and user[2] == password:
+                token_data = {
+                    "user_id": user[0],
+                    "user_name": user[1],
+                    "expires_at": (datetime.utcnow() + timedelta(minutes=20)).isoformat()
+                }
+                jwt_token = jwt.encode(token_data, "50aa207b47293b1bf86b792a99cdc5a9bd55c6fb92010f156b9bbfd4c3e58bfd", algorithm="HS256")
+
+                response_data = {
+                    "message": "Login Successful",
+                    "user": {
+                        "user_id": user[0],
+                        "user_name": user[1],
+                        "isadmin": user[3]
+                    },
+                    "token": jwt_token
+                }
+                return response_data
+        raise HTTPException(status_code=401, detail="Incorrect username or password")
+    finally:
+        pool.release_connection(connection)
+
+
+
+
+            
+
+
+
+
+
+"""
+TABLES
+"""
 
 """
 This is the auto reset function
@@ -201,6 +270,57 @@ def get_table_info():
     finally:
         pool.release_connection(connection)
 
+"""
+USERS
+"""
+@app.get('/users')
+def get_user():
+    """
+
+    """
+    users={}
+    try:
+        connection = pool.get_connection()
+        cursor = connection.cursor()
+        cursor.execute(q.GET_ALL_USERS)
+        results = cursor.fetchall()
+        
+        return [{"user_id": row[0], "user_name": row[1], "password": row[2], "isadmin": row[3]} for row in results]
+        return users
+    
+    except Exception as e:
+        print(f"Error: {e}")
+        return {'error': 'Internal Server Error'}, 500
+    finally:
+        pool.release_connection(connection)
+
+@app.post('/users/create')
+async def new_customer(request: Request):
+    """
+    This route can be called to add a new customer. Calls CREATE_NEW_CUSTOMER in queries.py
+    Returns:
+        Success message on success
+        Error message on Error
+    """
+    try:
+        data = await request.json()
+        user_id = data.get('user_id')
+        user_name = data.get('user_name')
+        password = data.get('password')
+        isadmin = data.get('isadmin')
+        connection = pool.get_connection()
+        cursor = connection.cursor()
+        cursor.execute(q.CREATE_NEW_USER, ((user_id, user_name, password,isadmin)))
+        connection.commit()
+        return {'success': True, 'message': 'User {user_id} added successfully'}
+    except Exception as e:
+        print(f"Error: {e}")
+        raise HTTPException(status_code=500, detail='Internal Server Error')
+
+"""
+CUSTOMERS
+"""
+
 @app.get('/customer')
 def get_customer_info():
     """
@@ -277,6 +397,9 @@ async def new_customer(request: Request):
         print(f"Error: {e}")
         raise HTTPException(status_code=500, detail='Internal Server Error')
     
+"""
+ORDERS
+"""
 
 @app.get("/orders")
 def get_orders():
@@ -291,7 +414,28 @@ def get_orders():
         cursor = connection.cursor()
         cursor.execute(q.GET_ALL_ORDERS)
         orders = cursor.fetchall()
-        return [{"order_id": row[0], "table_number": row[1], "customer_id": row[2], "items": row[3]} for row in orders]
+        cursor.execute(q.GET_ALL_ORDER_ITEMS)
+        order_items = cursor.fetchall()
+        return [
+            {
+                "order_id": row[6],
+                "table_number": row[1],
+                "customer_id": row[0],
+                # Grab all of the food items and quantities from the ORDER_ITEMS table
+                # add only those which belong to the current order_id
+                "items": [
+                    {
+                        "food_id": order_item[0],
+                        "quantity": order_item[2]
+                    }
+
+                    for order_item in order_items
+                    if order_item[1] == row[0]
+                ]
+            }
+
+            for row in orders
+        ]
     except Exception as e:
         print(f"Error: {e}")
         return {'error': 'Internal Server Error'}, 500
@@ -313,10 +457,24 @@ def get_order(order_id: int):
     try:
         connection = pool.get_connection()
         cursor = connection.cursor()
-        cursor.execute(q.GET_ORDER_BY_ID, (order_id))
+        cursor.execute(q.GET_ORDER_BY_ID, (order_id, ))
         order = cursor.fetchone()
         if order:
-            return {"order_id": order[0], "table_number": order[1], "customer_id": order[2], "items": order[3]}
+            cursor.execute(q.GET_ORDER_ITEMS_BY_ID, (order_id, ))
+            order_items = cursor.fetchall()
+            return {
+                "order_id": order[6],
+                "table_number": order[1],
+                "customer_id": order[0],
+                "items": [
+                    {
+                        "food_id": order_item[0],
+                        "quantity": order_item[2]
+                    }
+
+                    for order_item in order_items
+                ]
+            }
         else:
             raise HTTPException(status_code=404, detail="Order not found")
     except HTTPException as e:
@@ -339,10 +497,29 @@ async def place_order(request: Request, order: Order):
       Error message on failure.
   """
     try:
+        # Quick duplicate filter for order items
+        # Will throw away an order item if it's associated food id is already present to avoid errors
+        food_item_ids = []
+        unique_food_items = []
+        for order_item in order.items:
+            if order_item.food_id not in food_item_ids:
+                unique_food_items.append(order_item)
+                food_item_ids.append(order_item.food_id)
+        
+        order.items = unique_food_items
+
         connection = pool.get_connection()
         cursor = connection.cursor()
-        cursor.execute(q.PLACE_ORDER, (order.table_number, order.customer_id, order.items,))
+        # Add order to 'public.order' table
+        cursor.execute(q.CREATE_ORDER, (order.customer_id, order.table_number, ))
+        order_id = cursor.fetchone()
         connection.commit()
+
+        # Add each food item to 'public.order_items' table
+        for order_item in order.items:
+            cursor.execute(q.CREATE_ORDER_ITEM, (order_item.food_id, order_id, order_item.quantity, ))
+            connection.commit()
+
         return {'success': True, 'message': 'Order placed successfully'}
     except Exception as e:
         print(f"Error: {e}")
