@@ -275,10 +275,24 @@ def get_order(order_id: int):
     try:
         connection = pool.get_connection()
         cursor = connection.cursor()
-        cursor.execute(q.GET_ORDER_BY_ID, (order_id))
+        cursor.execute(q.GET_ORDER_BY_ID, (order_id, ))
         order = cursor.fetchone()
         if order:
-            return {"order_id": order[0], "table_number": order[1], "customer_id": order[2], "items": order[3]}
+            cursor.execute(q.GET_ORDER_ITEMS_BY_ID, (order_id, ))
+            order_items = cursor.fetchall()
+            return {
+                "order_id": order[0],
+                "table_number": order[1],
+                "customer_id": order[2],
+                "items": [
+                    {
+                        "food_id": order_item[0],
+                        "quantity": order_item[2]
+                    }
+
+                    for order_item in order_items
+                ]
+            }
         else:
             raise HTTPException(status_code=404, detail="Order not found")
     except HTTPException as e:
@@ -301,10 +315,29 @@ async def place_order(request: Request, order: Order):
       Error message on failure.
   """
     try:
+        # Quick duplicate filter for order items
+        # Will throw away an order item if it's associated food id is already present to avoid errors
+        food_item_ids = []
+        unique_food_items = []
+        for order_item in order.items:
+            if order_item.food_id not in food_item_ids:
+                unique_food_items.append(order_item)
+                food_item_ids.append(order_item.food_id)
+        
+        order.items = unique_food_items
+
         connection = pool.get_connection()
         cursor = connection.cursor()
-        cursor.execute(q.PLACE_ORDER, (order.table_number, order.customer_id, order.items,))
+        # Add order to 'public.order' table
+        cursor.execute(q.CREATE_ORDER, (order.customer_id, order.table_number, ))
+        order_id = cursor.fetchone()
         connection.commit()
+
+        # Add each food item to 'public.order_items' table
+        for order_item in order.items:
+            cursor.execute(q.CREATE_ORDER_ITEM, (order_item.food_id, order_id, order_item.quantity, ))
+            connection.commit()
+
         return {'success': True, 'message': 'Order placed successfully'}
     except Exception as e:
         print(f"Error: {e}")

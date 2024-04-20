@@ -16,12 +16,15 @@ GET_CUSTOMER_BY_ID = "SELECT * FROM public.customer WHERE customer_id = %s;"
 
 CREATE_NEW_CUSTOMER = "INSERT INTO public.customer (customer_id, customer_name, customer_address, customer_phone, customer_email) VALUES (%s, %s, %s, %s, %s);"
 
-GET_ALL_ORDERS = "SELECT * FROM order;"
+GET_ALL_ORDERS = "SELECT * FROM public.order;"
 
-GET_ALL_ORDER_ITEMS = "SELECT * FROM order_items;"
+GET_ALL_ORDER_ITEMS = "SELECT * FROM public.order_items;"
 
-GET_ORDER_ITEMS = "SELECT * FROM order_items WHERE order_id = %s"
+GET_ORDER_BY_ID = "SELECT * FROM public.order WHERE order_id = %s;"
 
-GET_ORDER_BY_ID = "SELECT * FROM order WHERE order_id = %s;"
+GET_ORDER_ITEMS_BY_ID = "SELECT * FROM public.order_items WHERE order_id = %s;"
 
-PLACE_ORDER = "INSERT INTO orders (table_number, customer_id, items) VALUES (%s, %s, %s);"
+# The order_date, order_status, employee_id, and guest_amount are currently ignored.
+CREATE_ORDER = "INSERT INTO public.order (customer_id, table_id) VALUES (%s, %s) RETURNING order_id;"
+
+CREATE_ORDER_ITEM = "INSERT INTO public.order_items (food_id, order_id, quantity) VALUES (%s, %s, %s)"

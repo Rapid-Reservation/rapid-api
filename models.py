@@ -16,7 +16,12 @@ class Table(BaseModel):
     table_avaliable: bool
 
 
+class OrderItem(BaseModel):
+    food_id: int
+    quantity: int
+
+
 class Order(BaseModel):
     table_number: int
     customer_id: int
-    items: List[str]
+    items: List[OrderItem]
