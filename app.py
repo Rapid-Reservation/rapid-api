@@ -548,8 +548,6 @@ def clear_order(order_id: int):
     try:
         connection = pool.get_connection()
         cursor = connection.cursor()
-        cursor.execute(q.CLEAR_ORDER_ITEMS_BY_ID, (order_id, ))
-        connection.commit()
         cursor.execute(q.CLEAR_ORDER, (order_id, ))
         connection.commit()
         return {'success': True, 'message': f'Order {order_id} cleared successfully'}

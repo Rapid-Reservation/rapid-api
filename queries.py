@@ -44,8 +44,6 @@ CREATE_ORDER = "INSERT INTO public.order (customer_id, table_id) VALUES (%s, %s)
 
 CREATE_ORDER_ITEM = "INSERT INTO public.order_items (food_id, order_id, quantity) VALUES (%s, %s, %s)"
 
-CLEAR_ORDER = "DELETE FROM public.order WHERE order_id = %s;"
+CLEAR_ORDER = "UPDATE public.order SET table_id = NULL WHERE order_id = %s;"
 
-CLEAR_ORDER_ITEMS_BY_ID = "DELETE FROM public.order_items WHERE order_id = %s;"
-
-CLEAR_ALL_ORDERS = "DELETE FROM public.order_items; DELETE FROM public.order;"
+CLEAR_ALL_ORDERS = "UPDATE public.order SET table_id = NULL;"
