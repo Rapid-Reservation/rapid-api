@@ -34,3 +34,7 @@ GET_CUSTOMER_ID_BY_EMAIL = "SELECT customer_id from public.customer where custom
 # The order_date, order_status, employee_id, and guest_amount are currently ignored.
 CREATE_ORDER = "INSERT INTO public.order (customer_id, table_id) VALUES (%s, %s) RETURNING order_id;"
 CREATE_ORDER_ITEM = "INSERT INTO public.order_items (food_id, order_id, quantity) VALUES (%s, %s, %s)"
+
+CLEAR_ORDER = "UPDATE public.order SET table_id = NULL WHERE order_id = %s;"
+
+CLEAR_ALL_ORDERS = "UPDATE public.order SET table_id = NULL;"
