@@ -528,6 +528,38 @@ async def place_order(request: Request, order: Order):
         pool.release_connection(connection)
 
 
+@app.post('/orders/clear')
+def clear_all_orders():
+    try:
+        connection = pool.get_connection()
+        cursor = connection.cursor()
+        cursor.execute(q.CLEAR_ALL_ORDERS)
+        connection.commit()
+        return {'success': True, 'message': 'All orders all cleared successfully'}
+    except Exception as e:
+        print(f"Error: {e}")
+        return {'error': 'Internal Server Error'}, 500
+    finally:
+        pool.release_connection(connection)
+
+
+@app.post('/order/{order_id}/clear')
+def clear_order(order_id: int):
+    try:
+        connection = pool.get_connection()
+        cursor = connection.cursor()
+        cursor.execute(q.CLEAR_ORDER_ITEMS_BY_ID, (order_id, ))
+        connection.commit()
+        cursor.execute(q.CLEAR_ORDER, (order_id, ))
+        connection.commit()
+        return {'success': True, 'message': f'Order {order_id} cleared successfully'}
+    except Exception as e:
+        print(f"Error: {e}")
+        return {'error': 'Internal Server Error'}, 500
+    finally:
+        pool.release_connection(connection)
+
+
 def sanitize(incoming):
     """
     This function will sanitize incoming strings before they are inserted into the database to prevent data injection/
