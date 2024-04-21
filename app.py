@@ -336,7 +336,7 @@ def get_customer_info():
         cursor.execute(q.GET_ALL_CUSTOMERS)
         results = cursor.fetchall()
 
-        customers = [{'customer_id': row[0],'customer_name': row[1], 'customer_address': row[2], 'customer_phone': row[3], 'customer_email': row[4]} for row in results]
+        customers = [{'customer_id': row[4],'customer_name': row[0], 'customer_address': row[1], 'customer_phone': row[2], 'customer_email': row[3]} for row in results]
         return customers
 
     except Exception as e:
@@ -360,9 +360,8 @@ def get_one_customer_info(customer_id):
         cursor.execute(q.GET_CUSTOMER_BY_ID, (customer_id,))
         result = cursor.fetchall()
 
-        customer = [{'customer_id': row[0],'customer_name': row[1], 'customer_address': row[2], 'customer_phone': row[3], 'customer_email': row[4]} for row in result]
-
-        return (customer)
+        customer = [{'customer_id': row[4],'customer_name': row[0], 'customer_address': row[1], 'customer_phone': row[2], 'customer_email': row[3]} for row in result]
+        return customer
 
     except Exception as e:
         print(f"Error: {e}")
@@ -382,7 +381,7 @@ async def new_customer(request: Request):
     try:
         data = await request.json()
         # TODO: add string sanitization here
-        customer_id = sanitize(data.get('customer_id'))
+        #customer_id = sanitize(data.get('customer_id'))
         customer_name = sanitize(data.get('customer_name'))
         customer_address = sanitize(data.get('customer_address'))
         customer_phone = sanitize(data.get('customer_phone'))
@@ -390,7 +389,7 @@ async def new_customer(request: Request):
         print(customer_name + customer_address + customer_phone + customer_email)
         connection = pool.get_connection()
         cursor = connection.cursor()
-        cursor.execute(q.CREATE_NEW_CUSTOMER, (customer_id, customer_name, customer_address, customer_phone, customer_email,))
+        cursor.execute(q.CREATE_NEW_CUSTOMER, (customer_name, customer_address, customer_phone, customer_email,))
         connection.commit()
         return {'success': True, 'message': 'Customer added successfully'}
     except Exception as e:
