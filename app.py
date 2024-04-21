@@ -460,7 +460,7 @@ def get_orders():
                     }
 
                     for order_item in order_items
-                    if order_item[1] == row[0]
+                    if order_item[1] == row[6]
                 ]
             }
 
