@@ -1,22 +1,17 @@
 # Imported Modules
 import os
-from typing import Annotated
 from dotenv import load_dotenv
 from models import Order
-from typing import Union
-from urllib import request
-from fastapi import FastAPI, Request, HTTPException, Depends, status
-from fastapi.responses import JSONResponse
+from fastapi import FastAPI, Request, HTTPException
 from fastapi.exceptions import HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from psycopg2 import pool
 from datetime import datetime, timedelta
 import jwt 
-from passlib.context import CryptContext
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 import uvicorn
 import asyncio
+
 # Local Modules
 import queries as q
 import pool
@@ -136,6 +131,7 @@ This route is called when a table is reserved. Calls SET_RESERVATION script in q
 
 Returns:
     Success message on success
+
     Error message on error
 """
 @app.post('/table/set/{table_number}')
@@ -165,6 +161,7 @@ This route can be called to make a table ready to be reserved again. Calls CLEAR
 
 Returns:
         Success message on success
+
         Error message on Error
 """
 @app.post('/table/clear/{table_number}')
@@ -194,6 +191,7 @@ This route can be called to make all table ready to be reserved again. Calls CLE
 
 Returns:
         Success message on success
+
         Error message on Error
 """
 @app.post('/table/clear_all/')
@@ -224,6 +222,7 @@ This route is used to check the current status of a given table. Calls SELECT_RE
 
 Returns:
     Json with table information on success
+
     Error message on error
 """
 @app.get('/table/{table_number}')
@@ -250,6 +249,7 @@ This route is used to pull all the data from all the tables. Calls GET_TABLE_INF
 
 Returns:
     JSON of all table data on success
+
     Fail message on Failure
 """
 @app.get('/table')
@@ -286,7 +286,28 @@ def get_user():
         results = cursor.fetchall()
         
         return [{"user_id": row[0], "user_name": row[1], "password": row[2], "isadmin": row[3]} for row in results]
-        return users
+
+    
+    except Exception as e:
+        print(f"Error: {e}")
+        return {'error': 'Internal Server Error'}, 500
+    finally:
+        pool.release_connection(connection)
+
+@app.get('/customer/id/{email}')
+def get_user_by_email(email: str):
+    """
+
+    """
+    user={}
+    try:
+        connection = pool.get_connection()
+        cursor = connection.cursor()
+        cursor.execute(q.GET_CUSTOMER_ID_BY_EMAIL, (email,))
+        results = cursor.fetchall()
+        
+        return [{"user_id": row[0]} for row in results]
+
     
     except Exception as e:
         print(f"Error: {e}")
@@ -298,8 +319,10 @@ def get_user():
 async def new_customer(request: Request):
     """
     This route can be called to add a new customer. Calls CREATE_NEW_CUSTOMER in queries.py
+
     Returns:
         Success message on success
+
         Error message on Error
     """
     try:
@@ -325,8 +348,10 @@ CUSTOMERS
 def get_customer_info():
     """
     This route is used to pull all the data from all the customers. Calls GET_ALL_CUSTOMERS from queries.py
+
     Returns:
         Json of all customer data on success
+
         Fail message on Failure
     """
     customers = {}
@@ -351,7 +376,9 @@ def get_one_customer_info(customer_id):
     """
     This route is used to return a single customers information. Calls GET_CUSTOMER_BY_ID from queries.py
     Returns:
+
         Json with customer information on success
+
         Error message on error
     """
     try:
@@ -375,7 +402,9 @@ async def new_customer(request: Request):
     """
     This route can be called to add a new customer. Calls CREATE_NEW_CUSTOMER in queries.py
     Returns:
+
         Success message on success
+
         Error message on Error
     """
     try:
@@ -404,8 +433,10 @@ ORDERS
 def get_orders():
     """
   This route retrieves information about all orders.
+
   Returns:
       JSON with a list of order details on success.
+
       Error message on failure.
   """
     try:
@@ -446,10 +477,12 @@ def get_orders():
 def get_order(order_id: int):
     """
   This route retrieves information about a specific order.
+
   Args:
       order_id: The ID of the order to retrieve.
   Returns:
       JSON with order details on success.
+
       Error message on failure.
   """
 
@@ -489,10 +522,12 @@ def get_order(order_id: int):
 async def place_order(request: Request, order: Order):
     """
   This route creates a new order.
+
   Args:
       request: The request object containing order details.
   Returns:
       JSON with success message on success.
+
       Error message on failure.
   """
     try:
