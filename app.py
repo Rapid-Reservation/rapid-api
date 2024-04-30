@@ -1,14 +1,16 @@
 # Imported Modules
 import os
 from dotenv import load_dotenv
+from fastapi.security import OAuth2PasswordBearer
+from jose import jwt, JWTError
 from models import Order
-from fastapi import FastAPI, Request, HTTPException
+from fastapi import Depends, FastAPI, Request, HTTPException, status
 from fastapi.exceptions import HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from psycopg2 import pool
 from datetime import datetime, timedelta
-import jwt 
+#import jwt 
 import uvicorn
 import asyncio
 
@@ -61,7 +63,28 @@ class User(BaseModel):
     password: str
     isadmin: bool
 
+class Token(BaseModel):
+    access_token: str
+    token_type: str
 
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+load_dotenv()
+SECRET_KEY=os.getenv('SECRET_KEY')
+ALGORITHM=os.getenv('ALGORITHM')
+
+
+def decode_token(token: str):
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=ALGORITHM)
+        return payload
+    except JWTError:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token")
+
+# Endpoint to retrieve user data using JWT token
+@app.get("/user/me")
+async def read_user_info(token: str = Depends(oauth2_scheme)):
+    user = decode_token(token)
+    return user
 
 """
 Login route
@@ -83,9 +106,10 @@ async def login(request: Request):
                 token_data = {
                     "user_id": user[0],
                     "user_name": user[1],
+                    "isadmin": user[3],
                     "expires_at": (datetime.utcnow() + timedelta(minutes=20)).isoformat()
                 }
-                jwt_token = jwt.encode(token_data, "50aa207b47293b1bf86b792a99cdc5a9bd55c6fb92010f156b9bbfd4c3e58bfd", algorithm="HS256")
+                jwt_token = jwt.encode(token_data, SECRET_KEY, algorithm=ALGORITHM)
 
                 response_data = {
                     "message": "Login Successful",
