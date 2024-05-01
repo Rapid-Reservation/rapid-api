@@ -86,6 +86,29 @@ async def read_user_info(token: str = Depends(oauth2_scheme)):
     user = decode_token(token)
     return user
 
+@app.get("/user/username/{username}")
+async def check_username_exists(username: str):
+    try:
+        # Get a database connection
+        connection = pool.get_connection()
+        cursor = connection.cursor()
+
+        # Execute the query to check if the username exists
+        cursor.execute(q.GET_USER_BY_USERNAME, (username,))
+        result = cursor.fetchall()
+
+        # Check if any records were returned
+        if result:
+            return {"exists": True}
+        else:
+            return {"exists": False}
+    except Exception as e:
+        # Handle any errors
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        # Make sure to release the database connection
+        pool.release_connection(connection)
+
 """
 Login route
 """
